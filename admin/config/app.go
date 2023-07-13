@@ -26,7 +26,7 @@ func init() {
 		"address":  cfg.Env("app.address", "0.0.0.0"),
 		"port":     cfg.Env("app.port", "9600"),
 		"node":     cfg.Env("app.node", 1),
-		"debug":    cfg.Env("app.mode", true),
+		"debug":    cfg.Env("app.debug", false),
 		"domain":   cfg.Env("app.domain", "http://127.0.0.1:9600"),
 		"location": cfg.Env("app.location", "Asia/Shanghai"),
 		"providers": []service.Provider{
