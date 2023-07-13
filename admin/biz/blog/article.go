@@ -3,8 +3,8 @@ package blog
 import (
 	"context"
 	"errors"
-	"github.com/bsm/redislock"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/go-redsync/redsync/v4"
 	"github.com/gookit/goutil/strutil"
 	"github.com/herhe-com/framework/contracts/http/response"
 	"github.com/herhe-com/framework/contracts/util"
@@ -19,7 +19,6 @@ import (
 	"github.com/tizips/uper-go/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-	"time"
 )
 
 func ToArticleByPaginate(ctx context.Context, c *app.RequestContext) {
@@ -196,14 +195,16 @@ func DoArticleByUpdate(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	obtain, err := facades.Locker.Obtain(ctx, locker.Keys(request.ID), time.Second*60, &redislock.Options{RetryStrategy: redislock.LinearBackoff(100 * time.Millisecond)})
+	mutex := facades.Locker.NewMutex(locker.Keys("article", request.ID))
 
-	if err != nil {
+	if err := mutex.Lock(); err != nil {
 		http.Fail(c, "处理失败：%v", err)
 		return
 	}
 
-	defer obtain.Release(ctx)
+	defer func(lock *redsync.Mutex) {
+		_, _ = lock.Unlock()
+	}(mutex)
 
 	var article model.BlgArticle
 

@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/bsm/redislock"
 	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/go-redsync/redsync/v4"
 	"github.com/gookit/goutil/strutil"
 	"github.com/herhe-com/framework/facades"
 	"github.com/herhe-com/framework/http"
@@ -16,7 +16,6 @@ import (
 	"github.com/tizips/uper-go/model"
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
-	"time"
 )
 
 func ToCategories(ctx context.Context, c *app.RequestContext) {
@@ -166,14 +165,16 @@ func DoCategoryByUpdate(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	obtain, err := facades.Locker.Obtain(ctx, locker.Keys(request.ID), time.Second*60, &redislock.Options{RetryStrategy: redislock.LinearBackoff(100 * time.Millisecond)})
+	mutex := facades.Locker.NewMutex(locker.Keys("category", request.ID))
 
-	if err != nil {
+	if err := mutex.Lock(); err != nil {
 		http.Fail(c, "处理失败：%v", err)
 		return
 	}
 
-	defer obtain.Release(ctx)
+	defer func(mutex *redsync.Mutex) {
+		_, _ = mutex.Unlock()
+	}(mutex)
 
 	var category model.BlgCategory
 
