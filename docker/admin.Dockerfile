@@ -2,7 +2,7 @@
 
 # Start from the latest golang base image
 
-FROM golang:1.20.5 as builder
+FROM golang:1.20 as builder
 
 # Add Maintainer Info
 LABEL maintainer="tizips <tizips@163.com>"
