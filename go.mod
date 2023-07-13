@@ -9,7 +9,7 @@ require (
 	github.com/golang-module/carbon/v2 v2.2.3
 	github.com/gookit/color v1.5.3
 	github.com/gookit/goutil v0.6.8
-	github.com/herhe-com/framework v1.0.0
+	github.com/herhe-com/framework v1.2.0
 	github.com/manifoldco/promptui v0.9.0
 	github.com/meilisearch/meilisearch-go v0.25.0
 	github.com/spf13/cobra v1.7.0
@@ -38,6 +38,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.12.0 // indirect
+	github.com/go-redsync/redsync/v4 v4.8.1 // indirect
 	github.com/go-sql-driver/mysql v1.7.1 // indirect
 	github.com/golang-module/dongle v0.2.8 // indirect
 	github.com/golang-sql/civil v0.0.0-20220223132316-b832511892a9 // indirect
@@ -45,6 +46,8 @@ require (
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/h2non/filetype v1.1.3 // indirect
+	github.com/hashicorp/errwrap v1.1.0 // indirect
+	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect

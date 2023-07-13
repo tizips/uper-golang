@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/herhe-com/framework/console"
 	"github.com/herhe-com/framework/console/consoles"
 	cons "github.com/herhe-com/framework/contracts/console"
@@ -8,7 +9,9 @@ import (
 	"github.com/herhe-com/framework/database/gorm"
 	"github.com/herhe-com/framework/database/redis"
 	"github.com/herhe-com/framework/facades"
+	"github.com/herhe-com/framework/http/middleware"
 	"github.com/herhe-com/framework/validation"
+	"github.com/tizips/uper-go/web/route"
 )
 
 func init() {
@@ -37,6 +40,14 @@ func init() {
 			&consoles.ServerProvider{},
 			//&consoles2.RoleProvider{},
 			//&consoles2.DeveloperProvider{},
+		},
+		"server": map[string]any{
+			"route": route.Router,
+			//"handle":  func(server *server.Hertz) {},
+			//"options": []config.Option{},
+			"middlewares": []app.HandlerFunc{
+				middleware.AccessMiddleware(),
+			},
 		},
 	})
 }
